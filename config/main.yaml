@@ -1,0 +1,52 @@
+defaults:
+  - model: model1
+  - _self_
+
+params:
+  split_size: 0.2
+  ts_split: 5
+  random_state: 2023
+  holiday_id: DE-SH
+  target_col: net_sales
+
+raw_data:
+  path: data/raw.parquet
+
+weather_data:
+  path: data/weather_data.parquet
+
+processed:
+  dir: data/processed
+  dir_nb: ../data/processed
+  X_train:
+    name: X_train.parquet
+    path: ${processed.dir}/${processed.X_train.name}
+  X_test:
+    name: X_test.parquet
+    path: ${processed.dir}/${processed.X_test.name}
+  y_train:
+    name: y_train.parquet
+    path: ${processed.dir}/${processed.y_train.name}
+  y_test:
+    name: y_test.parquet
+    path: ${processed.dir}/${processed.y_test.name}
+
+model:
+  dir: models
+  name: xgboost_best_params
+  path: ${model.dir}/${model.name}
+
+trained_model:
+  dir: models
+  dir_nb: ../models
+  name: xgboost_model
+  path: ${trained_model.dir}/${trained_model.name}
+
+
+mlflow:
+  uri: https://dagshub.com/ericyaang/restaurant-sales-forecasting.mlflow #${{ secrets.MLFLOW_TRACKING_URI }}
+  username: ericyaang #${{ secrets.MLFLOW_TRACKING_USERNAME }}
+  password: c660f141fa4d49d54bb2a82161a13b62c041b40a #${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+  experiment_name: XGBoost Baseline
+
+
