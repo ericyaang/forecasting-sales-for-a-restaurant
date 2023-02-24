@@ -44,7 +44,7 @@ trained_model:
 
 
 mlflow:
-  uri: https://dagshub.com/ericyaang/restaurant-sales-forecasting.mlflow #${{ secrets.MLFLOW_TRACKING_URI }}
+  uri: https://dagshub.com/ericyaang/forecasting-sales-for-a-restaurant.mlflow #${{ secrets.MLFLOW_TRACKING_URI }}
   username: ericyaang #${{ secrets.MLFLOW_TRACKING_USERNAME }}
   password: c660f141fa4d49d54bb2a82161a13b62c041b40a #${{ secrets.MLFLOW_TRACKING_PASSWORD }}
   experiment_name: XGBoost Baseline

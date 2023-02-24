@@ -11,6 +11,11 @@ test:
 	pytest	
 
 
-git:
+git-status:
 	git add .
 	git status
+
+
+git-push:
+	git commit -m "update"
+	git push 	
