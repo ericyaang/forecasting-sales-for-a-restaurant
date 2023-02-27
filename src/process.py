@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 import hydra
@@ -5,12 +6,13 @@ import pandas as pd
 from hydra.utils import to_absolute_path as abspath
 from omegaconf import DictConfig
 from sklearn import set_config
-import logging
+
 from pipeline import preprocessor_1_a, preprocessor_2_c
 
 warnings.filterwarnings(action="ignore")
 set_config(transform_output="pandas")
 logger = logging.getLogger(__name__)
+
 
 #### Helper functions:
 def split_label(data: pd.DataFrame, target: str):
@@ -52,9 +54,7 @@ def add_climate_features(df: pd.DataFrame, data_location: str):
     weather_data = weather_data.apply(pd.to_numeric, errors="coerce")
 
     # filter dates from the original dataset
-    weather_data = weather_data.loc[
-        str(df.index.date.min()) : str(df.index.date.max())
-    ]
+    weather_data = weather_data.loc[str(df.index.date.min()) : str(df.index.date.max())]
     return df.join(weather_data, how="left")
 
 
@@ -71,7 +71,7 @@ def process(cfg: DictConfig):
     # load and apply preprocessor 1
     logger.info("Applying preprocessor 1...")
     prep_1 = preprocessor_1_a(
-        cfg.params.target_col, cfg.params.holiday_id
+        cfg.params.target_col, cfg.params.holiday_id, imputer_type="interpolate"
     )  # CHANGE THIS
     data = prep_1.fit_transform(data)
 
@@ -96,6 +96,7 @@ def process(cfg: DictConfig):
     y_train.to_parquet(abspath(cfg.processed.y_train.path))
     y_test.to_parquet(abspath(cfg.processed.y_test.path))
     logger.info("Data processing completed successfully.")
+
 
 if __name__ == "__main__":
     process()

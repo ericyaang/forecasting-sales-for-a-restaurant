@@ -2,28 +2,48 @@ from sklearn.compose import ColumnTransformer, make_column_selector
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, OrdinalEncoder
 
-from transformers import (AddLags, CyclicalFeatures, DateTimeFeaturesExtractor,
+from transformers import (CyclicalFeatures, DateTimeFeaturesExtractor,
                           GetHolidays, Interpolate, Log1pTransformer, ZeroFill)
 
 ###### Check data types before applying this transformation ######
 
 
 # Preprocessor applied to all data
+
+
 # 1.a: Baseline
-def preprocessor_1_a(target: str, holiday_id: str):
+def preprocessor_1_a(target: str, holiday_id: str, imputer_type: str):
+    if imputer_type == "interpolate":
+        imputer = Interpolate(target)
+    elif imputer_type == "null":
+        imputer = ZeroFill(target)
+    else:
+        raise ValueError("Invalid imputer type. Choose either 'interpolate' or 'null'.")
+
+    return Pipeline(
+        steps=[
+            ("imputer", imputer),
+            ("dt", DateTimeFeaturesExtractor()),
+            ("holy", GetHolidays(holiday_id)),
+            ("log", Log1pTransformer(target)),
+        ]
+    )
+
+
+def preprocessor_1_b(target: str, holiday_id: str):
     return Pipeline(
         steps=[
             ("intp", Interpolate(target)),
             ("dt", DateTimeFeaturesExtractor()),
             ("holy", GetHolidays(holiday_id)),
             ("log", Log1pTransformer(target)),
-            # ("lag", transformers.AddLags(target)),
+            # ("lag", AddLags(target)),
         ]
     )
 
 
 # 1.b: For new data
-def preprocessor_1_b(holiday_id: str):
+def preprocessor_1_c(holiday_id: str):
     return Pipeline(
         steps=[
             ("dt", DateTimeFeaturesExtractor()),
@@ -32,7 +52,7 @@ def preprocessor_1_b(holiday_id: str):
     )
 
 
-def preprocessor_1_c(target: str, holiday_id: str):
+def preprocessor_1_d(target: str, holiday_id: str):
     return Pipeline(
         steps=[
             ("intp", ZeroFill(target)),
@@ -42,6 +62,7 @@ def preprocessor_1_c(target: str, holiday_id: str):
             # ("lag", transformers.AddLags(target)),
         ]
     )
+
 
 # Preprocessor applied to splits
 

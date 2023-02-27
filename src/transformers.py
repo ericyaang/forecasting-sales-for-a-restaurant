@@ -7,9 +7,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from workalendar.registry import registry
 
 
-def get_de_holidays(
-    date_init: datetime.date, date_end: datetime.date, cal_id: str
-):
+def get_de_holidays(date_init: datetime.date, date_end: datetime.date, cal_id: str):
     CalendarClass = registry.get(cal_id)
     de_sh_holidays = CalendarClass()
     _list = []
@@ -40,9 +38,7 @@ class GetHolidays(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        de_holidays = get_de_holidays(
-            X.index.min(), X.index.max(), self.cal_id
-        )
+        de_holidays = get_de_holidays(X.index.min(), X.index.max(), self.cal_id)
         X = X.copy()
         X = X.join(de_holidays, how="left")
         X["holiday"] = X["holiday"].fillna("None")
@@ -69,28 +65,12 @@ class AddLags(BaseEstimator, TransformerMixin):
                 X[self.col].shift(3).rename("lagged_data_3d"),
                 X[self.col].shift(7).rename("lagged_data_1w"),
                 X[self.col].shift(14).rename("lagged_data_2w"),
-                X[self.col]
-                .shift(1)
-                .rolling(7)
-                .mean()
-                .rename("lagged_mean_1w"),
+                X[self.col].shift(1).rolling(7).mean().rename("lagged_mean_1w"),
                 X[self.col].shift(1).rolling(7).max().rename("lagged_max_1w"),
                 X[self.col].shift(1).rolling(7).min().rename("lagged_min_1w"),
-                X[self.col]
-                .shift(1)
-                .rolling(7 * 2)
-                .mean()
-                .rename("lagged_mean_2w"),
-                X[self.col]
-                .shift(1)
-                .rolling(7 * 2)
-                .max()
-                .rename("lagged_max_2w"),
-                X[self.col]
-                .shift(1)
-                .rolling(7 * 2)
-                .min()
-                .rename("lagged_min_2w"),
+                X[self.col].shift(1).rolling(7 * 2).mean().rename("lagged_mean_2w"),
+                X[self.col].shift(1).rolling(7 * 2).max().rename("lagged_max_2w"),
+                X[self.col].shift(1).rolling(7 * 2).min().rename("lagged_min_2w"),
             ],
             axis="columns",
         ).fillna(0)

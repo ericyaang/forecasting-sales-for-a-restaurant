@@ -1,21 +1,20 @@
-from sklearn.metrics import (
-    mean_squared_error,
-    mean_absolute_error,
-    r2_score,
-    mean_absolute_percentage_error,
-)
+import logging
+import os
+
+import hydra
+import joblib
+import mlflow
 import numpy as np
 import pandas as pd
 from hydra.utils import to_absolute_path as abspath
 from omegaconf import DictConfig
-import hydra
-import joblib
+from sklearn.metrics import (mean_absolute_error,
+                             mean_absolute_percentage_error,
+                             mean_squared_error, r2_score)
 from xgboost import XGBRegressor
-import os
-import mlflow
-import logging 
 
 logger = logging.getLogger(__name__)
+
 
 def load_data(cfg: DictConfig):
     X_train = pd.read_parquet(abspath(cfg.processed.X_train.path))
@@ -61,13 +60,9 @@ def get_prediction(model: XGBRegressor, data: dict):
 
 def evaluate_model(prediction: pd.DataFrame, data: dict):
     return {
-        "mape": mean_absolute_percentage_error(
-            data["y_test"], prediction
-        ).round(2),
+        "mape": mean_absolute_percentage_error(data["y_test"], prediction).round(2),
         "mae": mean_absolute_error(data["y_test"], prediction).round(2),
-        "rmse": np.sqrt(mean_squared_error(data["y_test"], prediction)).round(
-            2
-        ),
+        "rmse": np.sqrt(mean_squared_error(data["y_test"], prediction)).round(2),
         "r2": r2_score(data["y_test"], prediction).round(2),
     }
 
