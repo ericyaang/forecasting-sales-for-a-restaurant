@@ -1,7 +1,7 @@
 setup:
 	@echo "Creating virtual environment"
 	python -m venv .venv
-	.venv\Scripts\Activate.ps1
+	powershell -noexit -executionpolicy bypass .venv/Scripts/activate.ps1
 
 
 install:
@@ -13,6 +13,9 @@ install_poetry:
 	@echo "Installing poetry..."
 	poetry install
 	poetry run pre-commit install
+
+activate:
+	powershell -noexit -executionpolicy bypass .venv/Scripts/activate.ps1
 
 test:
 	pytest
