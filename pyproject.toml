@@ -20,6 +20,7 @@ lightgbm = "^3.3.5"
 hyperopt = "^0.2.7"
 statsmodels = "^0.13.5"
 black = "^23.1.0"
+dvc = "^2.45.1"
 
 
 [tool.poetry.group.dev.dependencies]

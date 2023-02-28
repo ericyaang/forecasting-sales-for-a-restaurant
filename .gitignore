@@ -99,3 +99,4 @@ data/conversion/private-data/
 models/*
 !.gitkeep
 docs/*
+/data
