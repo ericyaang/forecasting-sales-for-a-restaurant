@@ -32,7 +32,7 @@ git-push:
 	git commit -m "update"
 	git push
 
-process: 
+process:
 	@echo "Processing data..."
 	python src/process.py
 
@@ -50,6 +50,6 @@ train_model:
 
 pipeline: process select_reg train_hyperopt train_model
 
-	
+
 
 

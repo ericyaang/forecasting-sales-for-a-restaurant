@@ -22,7 +22,7 @@ The Extreme Gradient Boosting (XGBoost) algorithm was chosen for predicting futu
 - mae
 - rmse
 - r2
-  
+
 **Data**:
 
   - Historical daily sales data.
@@ -34,7 +34,7 @@ The Extreme Gradient Boosting (XGBoost) algorithm was chosen for predicting futu
 
 * **Data:** The app only requires the total value of daily sales, as follows in this example:
 
-date | sales | 
+date | sales |
 --- | --- |
 2021-06-01 | 3540.91 |
 2021-06-02 | 5049.35 |
@@ -44,12 +44,12 @@ date | sales |
 However, it is ideal to provide sales data hourly to identify the flow by shifts. Additional information usually improves the model's performance. The ideal minimum required period is at least 365 days.
 
 
-## Tools used 
+## Tools used
 - [Poetry](https://python-poetry.org/): packaging and dependency management
 - [MLflow](https://mlflow.org/): experiment tracking
 - [DagsHub](https://dagshub.com): managing and tracking machine learning workflows
 - [Hydra](https://hydra.cc/): simplifying the configuration of complex applications
-  
+
 
 ## Project structure
 
@@ -96,8 +96,8 @@ Scripts:
 * `src/train_model.py`: contains code for training the final model and saving it as an object.
 
 
-![pipeline](img\pipeline.png)
+![pipeline](img/pipeline.png)
 
 Once the pipeline run is completed, you can access to MLflow's server in your dagshub repository like this:
 
-![dagshub+mlflow](img\dagshub.png)
+![dagshub+mlflow](img/dagshub.png)
