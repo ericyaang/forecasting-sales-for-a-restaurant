@@ -43,9 +43,9 @@ For our experiment, we used 5-fold cross-validation with a gap of 7 days to avoi
 We can easily observe that our model has the superior performance over the traditional machine learning models.
 
 
-| Models               |   Duration(s) |   MAPE |   MAE |   RMSE |     R2 |
-|---:|:---------------------|--------------:|-------:|------:|-------:|-------:|
-| **XGBoost**              |           **1.5** |   **0.03** |  **0.26** |   **0.33** |   **0.39** |
+ Models               |   Duration(s) |   MAPE |   MAE |   RMSE |     R2 |
+|:----------------|--------------:|-------:|-----:|-------:|-------:|
+| **XGBoost**          |       **1.5** |**0.03** |  **0.26** |   **0.33** |   **0.39** |
 | GradientBoosting     |           1.7 |   0.03 |  0.28 |   0.35 |   0.32 |
 | LightGBM             |           1.5 |   0.04 |  0.29 |   0.37 |   0.23 |
 | Ridge                |           1.4 |   0.04 |  0.36 |   0.56 |  -1.19 |
@@ -54,7 +54,6 @@ We can easily observe that our model has the superior performance over the tradi
 | Lasso                |           1.5 |   0.05 |  0.44 |   0.55 |  -0.63 |
 | ElasticNet           |           1.3 |   0.05 |  0.44 |   0.55 |  -0.62 |
 | Linear               |           1.4 |   0.06 |  0.53 |   1.53 | -31.13 |
-
 
 #### Final evaluation
 
