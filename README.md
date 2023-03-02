@@ -1,47 +1,77 @@
 [![](https://img.shields.io/badge/DagsHub-Link%20to%20DagsHub-red)](https://dagshub.com/ericyaang/forecasting-sales-for-a-restaurant)
 # Machine Learning-Based Sales Prediction for a Top-Rated Steakhouse
 
+
 This project is a Proof of Concept (PoC) prototype that aims to help a restaurant manager scale the number of employees needed to meet the establishment's daily demand.
 
-Predicting sales enables businesses to allocate resources efficiently, optimize cash flow and production, and make well-informed and effective business plans.
+Our aim is to forecast daily log sales for the next 7 days using the historical sales data. 
 
-However, the goal here is to predict the trend of the level of demand using the log of sales as a proxy. Therefore, it is not necessary to predict every value with meticulous accuracy.
+Accurately predicting future log sales can optimize employee scheduling, managing labor costs, and improve overall efficiency and profitability. By using a reliable model, we can anticipate changes in demand, adjust staffing levels accordingly, and provide excellent service to our customers.
 
 The Extreme Gradient Boosting (XGBoost) algorithm was chosen for predicting future sales due to its superior overall performance and faster processing time. It also requires less effort in feature engineering.
 
-## Overview
-
-**Objective**: Optimize employee scheduling at the establishment.
-
-**What is needed**: Daily sales and weather data.
-
-**Horizon**: Sales for the next 7 days.
-
 **Metrics**:
-- mape (main reference)
-- mae
-- rmse
-- r2
 
-**Data**:
+We are using MAPE as the main metric to evaluate our time series forecasting model. Other metrics will be used for comparison and to supplement our analysis.
 
-  - Historical daily sales data.
-  - Historical climate data for the region.
+- **MAPE (Mean Absolute Percentage Error)**
+- MAE (Mean Absolute Error) 
+- RMSE (Root Mean Squared Error)
+- R2 (Coefficient of Determination)
 
-  The ideal minimum period would be 1 year, in order to observe the annual seasonality that encompasses the complete cycle of seasons, as temperature varies depending on the season.
 
-## Requirements
+**Data:** The app only requires the total value of daily sales and mean daily temperature, as follows in this example:
 
-* **Data:** The app only requires the total value of daily sales, as follows in this example:
+date | sales | temp |
+--- | --- | --- |
+2021-06-01 | 3540.91 | 15.1 |
+2021-06-02 | 5049.35 | 21.0 |
+2021-06-03 | 7655.55 | 23.3|
+2021-06-04 | 5885.45 | 16.9|
 
-date | sales |
---- | --- |
-2021-06-01 | 3540.91 |
-2021-06-02 | 5049.35 |
-2021-06-03 | 7655.55 |
-2021-06-04 | 5885.45 |
 
-However, it is ideal to provide sales data hourly to identify the flow by shifts. Additional information usually improves the model's performance. The ideal minimum required period is at least 365 days.
+The ideal minimum period would be 1 year, in order to observe the annual seasonality that encompasses the complete cycle of seasons, as temperature varies depending on the season.
+
+### Results
+
+Out of the 441 samples, 353 (80%) were separated for the training set and 88 (20%) for the testing set.
+
+For our experiment, we used 5-fold cross-validation with a gap of 7 days to avoid overfitting.
+
+**The experimental results of our XGBoost model compared to others**
+
+We can easily observe that our model has the superior performance over the traditional machine learning models.
+
+
+| Models               |   Duration(s) |   MAPE |   MAE |   RMSE |     R2 |
+|---:|:---------------------|--------------:|-------:|------:|-------:|-------:|
+| **XGBoost**              |           **1.5** |   **0.03** |  **0.26** |   **0.33** |   **0.39** |
+| GradientBoosting     |           1.7 |   0.03 |  0.28 |   0.35 |   0.32 |
+| LightGBM             |           1.5 |   0.04 |  0.29 |   0.37 |   0.23 |
+| Ridge                |           1.4 |   0.04 |  0.36 |   0.56 |  -1.19 |
+| HistGradientBoosting |           3.2 |   0.04 |  0.29 |   0.37 |   0.23 |
+| Random Forest        |           2.2 |   0.04 |  0.31 |   0.38 |   0.2  |
+| Lasso                |           1.5 |   0.05 |  0.44 |   0.55 |  -0.63 |
+| ElasticNet           |           1.3 |   0.05 |  0.44 |   0.55 |  -0.62 |
+| Linear               |           1.4 |   0.06 |  0.53 |   1.53 | -31.13 |
+
+
+#### Final evaluation
+
+
+Our model's MAPE is 0.02, indicating that its predictions are within 2% of the actual values. With an accuracy rate of 98%, the model is reliable and useful for predicting future values of the time series for this context. However, it is important to exercise caution as our sample size is small and more data would be needed to increase our confidence in the model's accuracy.
+
+We identified a high outlier in the standardized residuals on May 26th, 2022, which caused deviation from the normal distribution. Therefore, further investigation is needed.
+
+To delve deeper into the error analysis, you may execute the `notebooks\analyze_results.ipynb` notebook, where we conduct a thorough examination of errors.
+
+![predictions](img/output.png)
+![featureimportance](img/output2.png)
+
+#### Limitations
+At present, we use log sales as an estimate for daily demand to inform our employee scheduling decisions. While this approach may not capture the full complexity of daily demand patterns, it still provides a useful approximation.
+
+However, in the future, we plan to incorporate more detailed information, such as hourly data and advanced feature engineering, to make even more accurate predictions. This will allow us to optimize our employee scheduling to meet the needs of our customers at different times of the day, reducing wait times, improving service quality, and minimizing labor costs.
 
 
 ## Tools used
@@ -62,11 +92,21 @@ However, it is ideal to provide sales data hourly to identify the flow by shifts
 
 ## Set Up the Project
 
+#### Clone this repository
+
+
+```bash
+git clone https://github.com/ericyaang/forecasting-sales-for-a-restaurant
+```
+
+#### Install
+
 ```bash
 make install_all
 ```
+#### Set your credentials
 
-On `config\main.yaml` paste your credentials from dagshub repository to your track metrics with mlflow
+On `config\main.yaml` paste your credentials from DagsHub repository to your track metrics with mlflow
 
 See more in [documentation](https://dagshub.com/docs/integration_guide/mlflow_tracking/index.html)
 
@@ -81,7 +121,7 @@ mlflow:
 ```
 
 
-##  Run the Project
+####  Run the Project
 
 ```bash
 make pipeline
@@ -98,6 +138,6 @@ Scripts:
 
 ![pipeline](img/pipeline.png)
 
-Once the pipeline run is completed, you can access to MLflow's server in your dagshub repository like this:
+Once the pipeline run is completed, you can access to MLflow's server in your DagsHub repository like this:
 
 ![dagshub+mlflow](img/dagshub.png)
