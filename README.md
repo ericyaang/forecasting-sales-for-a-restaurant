@@ -31,7 +31,7 @@ date | sales | temp |
 
 The ideal minimum period would be 1 year, in order to observe the annual seasonality that encompasses the complete cycle of seasons, as temperature varies depending on the season.
 
-### Results
+## Results
 
 Out of the 441 samples, 353 (80%) were separated for the training set and 88 (20%) for the testing set.
 
@@ -54,7 +54,7 @@ We can easily observe that our model has the superior performance over the tradi
 | ElasticNet           |           1.3 |   0.05 |  0.44 |   0.55 |  -0.62 |
 | Linear               |           1.4 |   0.06 |  0.53 |   1.53 | -31.13 |
 
-#### Final evaluation
+### Final evaluation
 
 
 Our model's MAPE is 0.02, indicating that its predictions are within 2% of the actual values. With an accuracy rate of 98%, the model is reliable and useful for predicting future values of the time series for this context. However, it is important to exercise caution as our sample size is small and more data would be needed to increase our confidence in the model's accuracy.
@@ -66,7 +66,7 @@ To delve deeper into the error analysis, you may execute the `notebooks\analyze_
 ![predictions](img/output.png)
 ![featureimportance](img/output2.png)
 
-#### Limitations
+### Limitations
 At present, we use log sales as an estimate for daily demand to inform our employee scheduling decisions. While this approach may not capture the full complexity of daily demand patterns, it still provides a useful approximation.
 
 However, in the future, we plan to incorporate more detailed information, such as hourly data and advanced feature engineering, to make even more accurate predictions. This will allow us to optimize our employee scheduling to meet the needs of our customers at different times of the day, reducing wait times, improving service quality, and minimizing labor costs.
