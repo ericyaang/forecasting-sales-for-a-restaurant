@@ -1,4 +1,3 @@
-[![](https://img.shields.io/badge/DagsHub-Link%20to%20DagsHub-red)](https://dagshub.com/ericyaang/forecasting-sales-for-a-restaurant)
 # Machine Learning-Based Sales Prediction for a Top-Rated Steakhouse
 
 
